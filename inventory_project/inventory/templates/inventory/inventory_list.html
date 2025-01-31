@@ -1,49 +1,65 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'inventory/css/styles.css' %}">
+
 <!DOCTYPE html>
 <html>
 <head>
     <title>Inventory Management</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'inventory/css/styles.css' %}">
 </head>
 <body>
-    <h1>Inventory Items</h1>
-    
-    {% if messages %}
-    <ul class="messages">
-        {% for message in messages %}
-        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-        {% endfor %}
-    </ul>
-    {% endif %}
-    
-    <table border="1">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Current Stock</th>
-                <th>Reorder Point</th>
-                <th>Reorder Quantity</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for item in items %}
-            <tr>
-                <td>{{ item.name }}</td>
-                <td>{{ item.current_stock }}</td>
-                <td>{{ item.reorder_point }}</td>
-                <td>{{ item.reorder_quantity }}</td>
-                <td>
-                    <form method="post" action="{% url 'inventory:use_stock' item.pk %}">
-                        {% csrf_token %}
-                        <input type="number" name="quantity" min="1" required>
-                        <button type="submit">Use Stock</button>
-                    </form>
-                    <a href="{% url 'inventory:inventory_update' item.pk %}">Edit</a>
-                    <a href="{% url 'inventory:inventory_delete' item.pk %}">Delete</a>
-                </td>
-            </tr>
+    <header class="header">
+        <nav class="nav container">
+            <h1>Inventory Management System</h1>
+            <a href="{% url 'inventory:inventory_add' %}" class="btn btn-success">Add New Item</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li class="{{ message.tags }}">{{ message }}</li>
             {% endfor %}
-        </tbody>
-    </table>
-    <a href="{% url 'inventory:inventory_add' %}">Add New Item</a>
+        </ul>
+        {% endif %}
+
+        <table class="inventory-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Current Stock</th>
+                    <th>Reorder Point</th>
+                    <th>Reorder Quantity</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                <tr>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.current_stock }}</td>
+                    <td>{{ item.reorder_point }}</td>
+                    <td>{{ item.reorder_quantity }}</td>
+                    <td>
+                        <form method="post" action="{% url 'inventory:use_stock' item.pk %}" class="form-inline">
+                            {% csrf_token %}
+                            <div class="form-group" style="display: flex; gap: 0.5rem;">
+                                <input type="number" name="quantity" min="1" required 
+                                       style="width: 80px; padding: 0.3rem;">
+                                <button type="submit" class="btn btn-primary">Use</button>
+                            </div>
+                        </form>
+                        <div style="margin-top: 0.5rem; display: flex; gap: 0.5rem;">
+                            <a href="{% url 'inventory:inventory_update' item.pk %}" class="btn btn-primary">Edit</a>
+                            <a href="{% url 'inventory:inventory_delete' item.pk %}" class="btn btn-danger">Delete</a>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </body>
 </html>
