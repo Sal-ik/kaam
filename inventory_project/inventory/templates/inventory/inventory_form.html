@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% if object %}Edit{% else %}Add{% endif %} Item</title>
+</head>
+<body>
+    <h1>{% if object %}Edit{% else %}Add{% endif %} Inventory Item</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Save</button>
+    </form>
+    <a href="{% url 'inventory:inventory_list' %}">Cancel</a>
+</body>
+</html>

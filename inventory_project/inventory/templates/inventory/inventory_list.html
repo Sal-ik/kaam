@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Inventory Management</title>
+</head>
+<body>
+    <h1>Inventory Items</h1>
+    
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Current Stock</th>
+                <th>Reorder Point</th>
+                <th>Reorder Quantity</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in items %}
+            <tr>
+                <td>{{ item.name }}</td>
+                <td>{{ item.current_stock }}</td>
+                <td>{{ item.reorder_point }}</td>
+                <td>{{ item.reorder_quantity }}</td>
+                <td>
+                    <form method="post" action="{% url 'inventory:use_stock' item.pk %}">
+                        {% csrf_token %}
+                        <input type="number" name="quantity" min="1" required>
+                        <button type="submit">Use Stock</button>
+                    </form>
+                    <a href="{% url 'inventory:inventory_update' item.pk %}">Edit</a>
+                    <a href="{% url 'inventory:inventory_delete' item.pk %}">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{% url 'inventory:inventory_add' %}">Add New Item</a>
+</body>
+</html>
