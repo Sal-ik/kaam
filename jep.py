@@ -37,10 +37,6 @@ def calculator():
         print("Invalid input")
 
 # Run the calculator
-<<<<<<< HEAD
 calculator()
 
 print ('nofu')
-=======
-calculator()
->>>>>>> one-branch
