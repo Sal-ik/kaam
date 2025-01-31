@@ -39,4 +39,4 @@ def calculator():
 # Run the calculator
 calculator()
 
-print('hello world')
+print ('nofu')
